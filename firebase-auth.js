@@ -3,7 +3,7 @@ import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase
 import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCxc6LEdv7M6IImqGFrSJwgBUt5D3-ISYg',
+  apiKey: 'AIzaSyCxc6LEdv7M6lImqGFrSJwgBUt5D3-ISYg',
   authDomain: 'travel-journal-af628.firebaseapp.com',
   projectId: 'travel-journal-af628',
   storageBucket: 'travel-journal-af628.firebasestorage.app',
