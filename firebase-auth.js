@@ -11,6 +11,15 @@ const firebaseConfig = {
   appId: '1:177806311533:web:20281d990d1d75f34d7f64'
 };
 const status=document.getElementById('auth-status');
+const diag=document.createElement('div');
+diag.id='auth-diagnostics';
+diag.setAttribute('role','status');
+diag.style.cssText='margin:8px 0;padding:10px 12px;border:1px solid #b5d9e4;background:#eff8fa;color:#345b69;border-radius:10px;white-space:pre-wrap;font-size:12px;line-height:1.6;display:none;max-width:100%;overflow-wrap:anywhere';
+(status?.parentElement||document.body).appendChild(diag);
+function showDiagnostic(message){diag.style.display='block';diag.textContent=message;}
+window.addEventListener('unhandledrejection',event=>{
+ if(String(event.reason?.code||'').startsWith('auth/'))showDiagnostic('登入未處理錯誤：'+event.reason.code+'\n'+(event.reason.message||''));
+});
 const login=document.getElementById('auth-login');
 const logout=document.getElementById('auth-logout');
 const app=initializeApp(firebaseConfig);
@@ -26,15 +35,25 @@ function errorMessage(error){
  return '登入失敗：'+(code||'unknown')+(error?.message?' — '+error.message:'');
 }
 login.addEventListener('click',async()=>{
+ showDiagnostic('開始登入檢查…\n網站：'+location.origin+'\nFirebase 專案：'+firebaseConfig.projectId+'\nFirebase Auth 網域：'+firebaseConfig.authDomain+'\n等待 Google 驗證結果…');
  login.disabled=true;status.textContent='正在開啟 Google 登入…';
- try{loginError=null;await signInWithPopup(auth,provider)}catch(e){console.error('Firebase Google 登入錯誤：',e);loginError=errorMessage(e);status.textContent=loginError}
+ try{
+  loginError=null;
+  const result=await signInWithPopup(auth,provider);
+  showDiagnostic('登入成功！UID：'+result.user.uid+'\n請前往 Firebase Authentication → 使用者確認。');
+ }catch(e){
+  console.error('Firebase Google 登入錯誤：',e);
+  loginError=errorMessage(e);
+  status.textContent=loginError;
+  showDiagnostic('登入失敗\n錯誤代碼：'+(e?.code||'unknown')+'\n錯誤內容：'+(e?.message||'無')+'\n網站：'+location.origin+'\n建議：使用 Chrome 無痕視窗測試；確認 Google 登入提供者與授權網域。');
+ }
  finally{login.disabled=false}
 });
 logout.addEventListener('click',async()=>{try{await signOut(auth)}catch(e){status.textContent=errorMessage(e)}});
 onAuthStateChanged(auth,user=>{
  login.hidden=!!user;logout.hidden=!user;
  if(user){
-  status.textContent='已登入：'+(user.displayName||user.email||'Google 使用者');
+  status.textContent='已登入：'+(user.displayName||user.email||'Google 使用者');showDiagnostic('Google 登入成功。\nUID：'+user.uid);
   // Firebase Console → Authentication → 使用者 可複製此 UID。
   console.info('旅色手帳 Firebase 使用者 UID：',user.uid);
  }else{status.textContent=loginError||'尚未登入 Firebase'}
