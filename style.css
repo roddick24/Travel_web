@@ -42,3 +42,13 @@ section[id]{scroll-margin-top:24px}
 /* 未登入或非管理員：隱藏所有編輯控制，後端仍以 Firestore Rules 保護 */
 body.cloud-viewer [data-action="new-trip"],body.cloud-viewer [data-action="delete-trip"],body.cloud-viewer [data-action="toggle-public"],body.cloud-viewer [data-action="flight"],body.cloud-viewer [data-action="add-hotel"],body.cloud-viewer [data-action="edit-hotel"],body.cloud-viewer [data-action="delete-hotel"],body.cloud-viewer [data-action="spot"],body.cloud-viewer [data-action="edit-spot"],body.cloud-viewer [data-action="delete-spot"],body.cloud-viewer [data-action="day-titles"],body.cloud-viewer [data-action="timeline"],body.cloud-viewer [data-action="delete-item"]{display:none!important}
 body.cloud-viewer [data-drag-index]{cursor:default!important}
+
+/* 頂部導覽微調：清晰的返回按鈕、相鄰的登出按鈕 */
+header #header-nav{display:flex;align-items:center;margin:0;}
+header #header-nav .btn[data-action="home"]{background:#6a9fba!important;color:#fff!important;border:1px solid #5d94b0!important;box-shadow:0 2px 7px #629bb329;padding:9px 13px;}
+header #header-nav .btn[data-action="home"]:hover{background:#4e89a8!important;}
+header #firebase-auth-widget{gap:0;flex-wrap:nowrap;justify-content:flex-start;}
+header #firebase-auth-widget .auth-btn{white-space:nowrap;}
+header #auth-status:empty,header #auth-status[hidden]{display:none!important;}
+header #auth-diagnostics{position:absolute;right:16px;top:100%;z-index:30;max-width:min(430px,calc(100vw - 32px));box-shadow:0 8px 20px #0001;}
+@media(max-width:600px){header #header-nav .btn[data-action="home"]{padding:7px 9px;font-size:12px;}header #firebase-auth-widget .auth-btn{padding:7px 9px;}}
