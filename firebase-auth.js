@@ -1,5 +1,6 @@
 // 第一階段：僅啟用 Firebase Google 登入以取得 UID，不改變原有本機資料與編輯權限。
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import {getFirestore, collection, query, where, onSnapshot, writeBatch, doc} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import {getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -24,6 +25,32 @@ const login=document.getElementById('auth-login');
 const logout=document.getElementById('auth-logout');
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
+const db=getFirestore(app);
+const ADMIN_UID='pE9enscLNOUjmSS6sean2mUfaK42';
+let unsubscribeTrips=null, knownIds=new Set(), activeAdmin=false, writeQueue=Promise.resolve();
+window.cloudSave=(items)=>{
+ if(!activeAdmin){alert('只有管理員能儲存');return}
+ // 串列化寫入，避免連續編輯互相覆蓋。每次只寫變更的文件。
+ const next=items.map(x=>({...x,isPublic:x.isPublic!==false}));
+ writeQueue=writeQueue.then(async()=>{
+  const batch=writeBatch(db), ids=new Set(next.map(t=>t.id));
+  for(const t of next)batch.set(doc(db,'trips',t.id),t);
+  for(const id of knownIds)if(!ids.has(id))batch.delete(doc(db,'trips',id));
+  await batch.commit();knownIds=ids;
+ }).catch(e=>{console.error('Firestore 儲存失敗',e);alert('雲端儲存失敗：'+(e.message||e.code)+'。請重新整理確認資料。')});
+};
+function watchTrips(user){
+ if(unsubscribeTrips){unsubscribeTrips();unsubscribeTrips=null}
+ activeAdmin=!!user&&user.uid===ADMIN_UID;
+ window.dispatchEvent(new Event('cloud-loading'));
+ const q=activeAdmin?collection(db,'trips'):query(collection(db,'trips'),where('isPublic','==',true));
+ unsubscribeTrips=onSnapshot(q,snap=>{
+  if(snap.metadata.hasPendingWrites)return;
+  if(activeAdmin)knownIds=new Set(snap.docs.map(d=>d.id));
+  window.dispatchEvent(new CustomEvent('cloud-trips',{detail:{admin:activeAdmin,trips:snap.docs.map(d=>({id:d.id,...d.data()}))}}));
+ },e=>{console.error('Firestore 讀取失敗',e);window.dispatchEvent(new CustomEvent('cloud-error',{detail:e.message||e.code}))});
+}
+
 const provider=new GoogleAuthProvider();
 let loginError=null;
 provider.setCustomParameters({prompt:'select_account'});
@@ -51,9 +78,10 @@ login.addEventListener('click',async()=>{
 });
 logout.addEventListener('click',async()=>{try{await signOut(auth)}catch(e){status.textContent=errorMessage(e)}});
 onAuthStateChanged(auth,user=>{
+ watchTrips(user);
  login.hidden=!!user;logout.hidden=!user;
  if(user){
-  status.textContent='已登入：'+(user.displayName||user.email||'Google 使用者');showDiagnostic('Google 登入成功。\nUID：'+user.uid);
+  status.textContent=(activeAdmin?'管理員：':'已登入（唯讀）：')+(user.displayName||user.email||'Google 使用者');showDiagnostic('Google 登入成功。\nUID：'+user.uid);
   // Firebase Console → Authentication → 使用者 可複製此 UID。
   console.info('旅色手帳 Firebase 使用者 UID：',user.uid);
  }else{status.textContent=loginError||'尚未登入 Firebase'}

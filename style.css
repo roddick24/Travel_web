@@ -38,3 +38,7 @@ section[id]{scroll-margin-top:24px}
 .auth-btn:disabled{opacity:.6;cursor:wait}
 .auth-btn[hidden]{display:none!important}
 @media(max-width:600px){.auth-status{max-width:140px}.auth-btn{padding:6px 8px}}
+
+/* 未登入或非管理員：隱藏所有編輯控制，後端仍以 Firestore Rules 保護 */
+body.cloud-viewer [data-action="new-trip"],body.cloud-viewer [data-action="delete-trip"],body.cloud-viewer [data-action="toggle-public"],body.cloud-viewer [data-action="flight"],body.cloud-viewer [data-action="add-hotel"],body.cloud-viewer [data-action="edit-hotel"],body.cloud-viewer [data-action="delete-hotel"],body.cloud-viewer [data-action="spot"],body.cloud-viewer [data-action="edit-spot"],body.cloud-viewer [data-action="delete-spot"],body.cloud-viewer [data-action="day-titles"],body.cloud-viewer [data-action="timeline"],body.cloud-viewer [data-action="delete-item"]{display:none!important}
+body.cloud-viewer [data-drag-index]{cursor:default!important}
