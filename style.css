@@ -29,3 +29,12 @@ section[id]{scroll-margin-top:24px}
 .spot-edit-btn{display:inline-flex;align-items:center;gap:4px;margin-right:8px;padding:5px 8px;border-radius:9px;background:#e8f4fa;color:#4c8aa9;font-size:12px;font-weight:700;transition:background .2s}
 .spot-edit-btn:hover{background:#d3eaf5}
 .spot-edit-btn:focus-visible{outline:2px solid #5f9fbd;outline-offset:2px}
+
+/* Firebase 登入狀態（第一階段，僅用於取得 UID） */
+.auth-widget{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.auth-status{font-size:12px;color:#fff;opacity:.95;max-width:240px;overflow-wrap:anywhere}
+.auth-btn{background:#e4f2ed;color:#476d67;border:1px solid #cbe3db;border-radius:10px;padding:8px 11px;font-weight:700;font-size:12px;cursor:pointer}
+.auth-btn:hover{background:#d2e9e0}
+.auth-btn:disabled{opacity:.6;cursor:wait}
+.auth-btn[hidden]{display:none!important}
+@media(max-width:600px){.auth-status{max-width:140px}.auth-btn{padding:6px 8px}}
