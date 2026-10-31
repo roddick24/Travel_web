@@ -68,7 +68,7 @@ header #auth-diagnostics{position:absolute;right:16px;top:100%;z-index:30;max-wi
 .extra-card{margin-top:16px}.extra-card h2{margin-bottom:12px}.prep-progress{display:block;width:100%;height:10px;accent-color:#78afa2;margin:10px 0 16px}.prep-list{display:grid;gap:8px;margin-bottom:14px}.prep-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border:1px solid #e4e7e3;border-radius:12px;background:#fafbf9}.prep-item label{display:flex;align-items:center;gap:9px;min-width:0;overflow-wrap:anywhere}.prep-item input{width:18px;height:18px;accent-color:#78afa2}.prep-done{text-decoration:line-through;color:#8b9490}.prep-actions{display:flex;gap:5px;flex-shrink:0}.prep-actions .btn{padding:6px 9px;font-size:12px}.exchange-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}.exchange-grid label{display:grid;gap:6px;font-size:13px}.exchange-result{display:grid;gap:4px;align-content:center;padding:12px;background:#e8f3ef;border-radius:12px;color:#376d64}.exchange-result strong{font-size:21px}.exchange-disclaimer{font-size:12px;margin-top:12px}body.cloud-viewer [data-action="prep-add"],body.cloud-viewer [data-action="prep-edit"],body.cloud-viewer [data-action="prep-delete"],body.cloud-viewer [data-action="exchange-save"]{display:none!important}@media(max-width:600px){.exchange-grid{grid-template-columns:1fr}.prep-item{align-items:flex-start}.prep-actions .btn{padding:6px}}
 
 /* 行前準備置頂，旅行用數字鍵盤匯率計算機 */
-#prep-section{margin-top:16px}
+#prep-section{margin-top:0}
 .exchange-calculator{max-width:430px;margin:0 auto 14px;padding:16px;border:1px solid #dce9e6;border-radius:24px;background:#f7faf8;box-shadow:0 8px 24px rgba(65,90,88,.07)}
 .exchange-settings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .exchange-settings label{display:grid;gap:6px;font-size:13px;color:#536d69}
@@ -90,3 +90,16 @@ header #auth-diagnostics{position:absolute;right:16px;top:100%;z-index:30;max-wi
 .exchange-fx-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}
 .exchange-fx-toolbar #exchange-status{flex:1;min-width:170px;font-size:.82rem;line-height:1.5}
 .exchange-fx-toolbar button{white-space:nowrap}
+
+/* B 方案：移除左側欄，旅程頂部快速跳轉導覽 */
+.desktop-sidebar{display:none!important}
+.app-shell{display:block}
+.app-content{width:100%;min-width:0}
+.trip-quick-nav[hidden]{display:none!important}
+.trip-quick-nav{display:flex;gap:10px;align-items:center;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;max-width:1460px;margin:16px auto 0;padding:4px 12px 8px;scroll-snap-type:x proximity}
+.trip-quick-nav a{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:1 0 auto;white-space:nowrap;min-height:44px;padding:10px 14px;border-radius:999px;background:#fffdfa;border:1px solid #e9e5df;color:#715b4f;font-size:13px;font-weight:750;text-decoration:none;box-shadow:0 2px 8px #8f877a10;scroll-snap-align:start;transition:background .18s,color .18s}
+.trip-quick-nav a:first-child{background:#78b3cb;border-color:#78b3cb;color:white}
+.trip-quick-nav a:hover,.trip-quick-nav a:focus-visible{background:#dcefe9;color:#3e756c}
+.trip-quick-nav .ui-icon{width:17px;height:17px}
+#prep-section{margin-top:16px}
+@media(max-width:720px){.trip-quick-nav{margin-top:10px;padding:4px 12px 8px;gap:8px}.trip-quick-nav a{flex:0 0 auto;padding:10px 13px;font-size:12px}section[id]{scroll-margin-top:105px}}
