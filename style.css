@@ -103,3 +103,23 @@ header #auth-diagnostics{position:absolute;right:16px;top:100%;z-index:30;max-wi
 .trip-quick-nav .ui-icon{width:17px;height:17px}
 #prep-section{margin-top:16px}
 @media(max-width:720px){.trip-quick-nav{margin-top:10px;padding:4px 12px 8px;gap:8px}.trip-quick-nav a{flex:0 0 auto;padding:10px 13px;font-size:12px}section[id]{scroll-margin-top:105px}}
+
+/* B 方案：快速導覽捲動時固定在頂端 */
+.trip-quick-nav:not([hidden]){
+  position:sticky;
+  top:0;
+  z-index:25;
+  background:rgba(248,246,241,.97);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid #e9e5df;
+  box-shadow:0 4px 12px rgba(80,70,60,.06);
+  max-width:none;
+  margin-top:0;
+  padding:9px max(12px,calc((100% - 1436px)/2)) 10px;
+}
+section[id],#itinerary{scroll-margin-top:90px}
+@media(max-width:720px){
+  .trip-quick-nav:not([hidden]){top:64px;padding:8px 12px 9px}
+  section[id],#itinerary{scroll-margin-top:160px}
+}
