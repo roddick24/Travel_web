@@ -123,3 +123,15 @@ section[id],#itinerary{scroll-margin-top:90px}
   .trip-quick-nav:not([hidden]){top:64px;padding:8px 12px 9px}
   section[id],#itinerary{scroll-margin-top:160px}
 }
+
+/* Android Chrome: fixed-position fallback for horizontally scrollable quick navigation */
+@media (max-width:720px) {
+  .trip-quick-nav.android-fixed:not([hidden]) {
+    position:fixed!important;
+    left:0;right:0;width:100%;max-width:none;
+    margin:0!important;
+    z-index:30;
+  }
+  .trip-nav-placeholder {display:none;height:0;}
+  .trip-nav-placeholder.active {display:block;}
+}

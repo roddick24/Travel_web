@@ -225,3 +225,48 @@ document.querySelector('.desktop-sidebar').addEventListener('click', e => {
   const section=document.getElementById(link.getAttribute('href').slice(1));
   if(section) section.scrollIntoView({behavior:'smooth',block:'start'});
 });
+
+
+// Android Chrome fallback: keep the quick navigation visible while scrolling.
+// Desktop and iOS retain their original CSS sticky behavior.
+(function setupAndroidQuickNav() {
+  if (!/Android/i.test(navigator.userAgent) || !/Chrome\//i.test(navigator.userAgent)) return;
+  const nav = document.getElementById('trip-quick-nav');
+  const header = document.querySelector('.app-content > header');
+  if (!nav || !header) return;
+  const spacer = document.createElement('div');
+  spacer.className = 'trip-nav-placeholder';
+  spacer.setAttribute('aria-hidden', 'true');
+  nav.parentNode.insertBefore(spacer, nav);
+  let scheduled = false;
+  function update() {
+    scheduled = false;
+    if (window.innerWidth > 720 || nav.hidden) {
+      nav.classList.remove('android-fixed');
+      nav.style.removeProperty('top');
+      spacer.classList.remove('active');
+      spacer.style.removeProperty('height');
+      return;
+    }
+    const headerHeight = Math.ceil(header.getBoundingClientRect().height);
+    const navHeight = Math.ceil(nav.getBoundingClientRect().height);
+    const anchorTop = spacer.classList.contains('active')
+      ? spacer.getBoundingClientRect().top
+      : nav.getBoundingClientRect().top;
+    const shouldFix = anchorTop <= headerHeight;
+    nav.classList.toggle('android-fixed', shouldFix);
+    nav.style.top = shouldFix ? `${headerHeight}px` : '';
+    spacer.classList.toggle('active', shouldFix);
+    spacer.style.height = shouldFix ? `${navHeight}px` : '';
+  }
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', schedule, {passive:true});
+  document.addEventListener('visibilitychange', schedule);
+  new MutationObserver(schedule).observe(nav, {attributes:true,attributeFilter:['hidden']});
+  schedule();
+})();
