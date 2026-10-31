@@ -66,3 +66,27 @@ header #auth-diagnostics{position:absolute;right:16px;top:100%;z-index:30;max-wi
 
 /* 行前準備及手動匯率換算 */
 .extra-card{margin-top:16px}.extra-card h2{margin-bottom:12px}.prep-progress{display:block;width:100%;height:10px;accent-color:#78afa2;margin:10px 0 16px}.prep-list{display:grid;gap:8px;margin-bottom:14px}.prep-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border:1px solid #e4e7e3;border-radius:12px;background:#fafbf9}.prep-item label{display:flex;align-items:center;gap:9px;min-width:0;overflow-wrap:anywhere}.prep-item input{width:18px;height:18px;accent-color:#78afa2}.prep-done{text-decoration:line-through;color:#8b9490}.prep-actions{display:flex;gap:5px;flex-shrink:0}.prep-actions .btn{padding:6px 9px;font-size:12px}.exchange-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}.exchange-grid label{display:grid;gap:6px;font-size:13px}.exchange-result{display:grid;gap:4px;align-content:center;padding:12px;background:#e8f3ef;border-radius:12px;color:#376d64}.exchange-result strong{font-size:21px}.exchange-disclaimer{font-size:12px;margin-top:12px}body.cloud-viewer [data-action="prep-add"],body.cloud-viewer [data-action="prep-edit"],body.cloud-viewer [data-action="prep-delete"],body.cloud-viewer [data-action="exchange-save"]{display:none!important}@media(max-width:600px){.exchange-grid{grid-template-columns:1fr}.prep-item{align-items:flex-start}.prep-actions .btn{padding:6px}}
+
+/* 行前準備置頂，旅行用數字鍵盤匯率計算機 */
+#prep-section{margin-top:0}
+.exchange-calculator{max-width:430px;margin:0 auto 14px;padding:16px;border:1px solid #dce9e6;border-radius:24px;background:#f7faf8;box-shadow:0 8px 24px rgba(65,90,88,.07)}
+.exchange-settings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.exchange-settings label{display:grid;gap:6px;font-size:13px;color:#536d69}
+.exchange-settings .field{min-width:0;width:100%}
+.exchange-screen{display:flex;flex-direction:column;gap:4px;align-items:flex-end;min-height:128px;padding:15px 18px;margin-bottom:12px;border-radius:18px;background:#e6f0ed;color:#3f6661}
+.exchange-screen span{font-size:12px}
+.exchange-screen strong{font-size:clamp(25px,6vw,35px);font-variant-numeric:tabular-nums;line-height:1.3;overflow-wrap:anywhere;text-align:right}
+#exchange-amount-display{color:#405b58}
+#exchange-output{color:#267469}
+.exchange-keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.exchange-key{min-height:57px;border-radius:15px;background:white;border:1px solid #e2eae7;color:#405d5a;font-size:23px;font-weight:600;touch-action:manipulation;box-shadow:0 2px 3px rgba(50,75,70,.06)}
+.exchange-key:active{transform:scale(.97);background:#d9eae5}
+.exchange-clear,.exchange-backspace,.exchange-clear-all{background:#e3eeeb;color:#376c64}
+.exchange-clear-all{font-size:15px}
+.exchange-save{display:block;margin:0 auto 8px}
+@media(max-width:480px){.exchange-settings{grid-template-columns:1fr}.exchange-calculator{padding:12px}.exchange-key{min-height:62px}}
+
+/* Automatic exchange-rate status and refresh control */
+.exchange-fx-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}
+.exchange-fx-toolbar #exchange-status{flex:1;min-width:170px;font-size:.82rem;line-height:1.5}
+.exchange-fx-toolbar button{white-space:nowrap}
